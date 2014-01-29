@@ -19,7 +19,7 @@ class Board
     when /\$([-0-9])/
       MineTile.new($1)
     when /\@([-0-9])/
-      HeroTile.new($1)
+      Hero.new($1)
     else
       puts "#{str} -- I have no idea what to do with that."
     end
@@ -36,18 +36,11 @@ class Board
     end
     (0..vector.length - 1).step(self.size).each do |i|
       this_matrix = vector[i..i+self.size]
+      puts this_matrix
       matrix << this_matrix
     end
 
     matrix
-    # ret_vals = []
-    # matrix.each do |xs|
-    #   xs.each do |x|
-    #     ret_vals << self.parse_tile(x)
-    #   end
-    # end
-
-    # ret_vals
   end
 
   def passable? loc

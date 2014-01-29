@@ -1,6 +1,6 @@
 class Vindinium
 
-  attr_accessor :games, :turns, :mode, :key, :server, :state, :http_client, :error, :bot
+  attr_accessor :games, :turns, :mode, :key, :server, :state, :http_client, :error, :bot, :debug
 
   def initialize opts
     puts "Opts: #{opts}"
@@ -9,6 +9,7 @@ class Vindinium
     end
 
     self.http_client = HTTPClient.new
+    self.http_client.debug_dev=$stdout if self.debug
     self.server = "http://vindinium.org" if not self.server
   end
 
@@ -21,6 +22,7 @@ class Vindinium
     self.state = create_new_game
     
     if self.error
+      puts "OOOPS -- couldn't start a new game!"
       puts self.error
       return
     else
@@ -53,7 +55,7 @@ class Vindinium
     end
 
     process_http_response http_client.post("#{self.server}/api/#{self.mode}", params)
-
+    
   end
 
   def barf
