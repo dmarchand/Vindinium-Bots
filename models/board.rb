@@ -40,14 +40,7 @@ class Board
     end
 
     matrix
-    # ret_vals = []
-    # matrix.each do |xs|
-    #   xs.each do |x|
-    #     ret_vals << self.parse_tile(x)
-    #   end
-    # end
 
-    # ret_vals
   end
 
   def passable? loc
