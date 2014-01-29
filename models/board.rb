@@ -19,7 +19,7 @@ class Board
     when /\$([-0-9])/
       MineTile.new($1)
     when /\@([-0-9])/
-      Hero.new($1)
+      HeroTile.new($1)
     else
       puts "#{str} -- I have no idea what to do with that."
     end
