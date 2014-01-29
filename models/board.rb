@@ -41,6 +41,7 @@ class Board
     end
 
     matrix
+
   end
 
   def passable? loc
