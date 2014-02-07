@@ -11,14 +11,19 @@ class Board
 
     case str
     when '  '
+      print '.. '
       AIR
     when '##'
+      print "#{str} "
       WALL
     when '[]'
+      print "#{str} "
       TAVERN
     when /\$([-0-9])/
+      print "#{str} "
       MineTile.new($1)
     when /\@([-0-9])/
+      print "#{str} "
       HeroTile.new($1)
     else
       puts "#{str} -- I have no idea what to do with that."
@@ -31,15 +36,16 @@ class Board
     vector = []
     matrix = []
     (0..tiles.length - 1).step(2).each do |i|
+      puts if i % (self.size * 2) == 0 && i != 0
       this_vector = tiles[i..i+1]
       vector << self.parse_tile(this_vector)
     end
     (0..vector.length - 1).step(self.size).each do |i|
-      this_matrix = vector[i..i+self.size]
-      puts this_matrix
+      this_matrix = vector[i..i+self.size-1]
       matrix << this_matrix
     end
 
+    puts
     matrix
 
   end
@@ -57,10 +63,10 @@ class Board
     d_row, d_col = AIM[direction]
     n_row = row + d_row
     n_row = 0 if n_row < 0
-    n_row = self.size if n_row > self.size
+    n_row = self.size - 1 if n_row >= self.size
     n_col = col + d_col
     n_col = 0 if n_col < 0
-    n_col = self.size if n_col > self.size
+    n_col = self.size - 1 if n_col >= self.size
 
     [n_row, n_col]
 
