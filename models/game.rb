@@ -3,8 +3,9 @@ class Game
   attr_accessor :state, :board, :heroes, :mines_locs, :heroes_locs, :taverns_locs
 
   def initialize state
-  
+ 
     self.state = state
+    puts "Turn #{state['game']['turn'] / 4}"
     self.board = Board.new state['game']['board']
     self.mines_locs = {}
     self.heroes_locs = {}
@@ -18,7 +19,6 @@ class Game
     self.board.tiles.each_with_index do |row, row_idx|
 
       row.each_with_index do |col, col_idx|
-
         # what kinda tile?
         obj = col 
         if obj.is_a? MineTile
