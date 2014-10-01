@@ -50,8 +50,7 @@ class Board
 
   end
 
-  def passable? loc
-    x, y = loc
+  def passable? x, y
     pos = self.tiles[x][y]
     (pos != WALL) and (pos != TAVERN) and (!pos.is_a?(MineTile))
   end

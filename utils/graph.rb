@@ -1,9 +1,10 @@
 class BoardGraph
 
-  attr_accessor :tiles, :nodes
+  attr_accessor :tiles, :nodes, :board
 
-  def initialize tiles
-    self.tiles = tiles
+  def initialize board
+    self.tiles = board.tiles
+    self.board = board
     self.nodes = []
     build()
     connect()
@@ -11,22 +12,29 @@ class BoardGraph
     ## quick test
     puts "#{self.nodes[4][0].tile}"
     puts "#{self.nodes[4][0].connections.length}"
+    puts "#{self.nodes[4][0].passable}"
   end
 
   def build
     puts "building nodes"
 
-    index = 0
+    row = 0
     tiles.each {
       |x|
-      row = []
+      boardrow = []
+      column = 0
       x.each {
         |tile|
-        index+=1
+
         node = BoardNode.new tile
-        row.push(node)
+        node.passable = self.board.passable? row, column
+        boardrow.push(node)
+
+        column += 1
       }
-      self.nodes.push(row)
+
+      row += 1
+      self.nodes.push(boardrow)
     }
 
   end

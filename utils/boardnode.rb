@@ -1,6 +1,6 @@
 class BoardNode
 
-  attr_accessor :tile, :connections
+  attr_accessor :tile, :connections, :passable
 
   def initialize tile
     self.tile = tile
