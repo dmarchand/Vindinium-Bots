@@ -18,7 +18,7 @@ else
   end
 
   CONF[:server] = ARGV.shift if ARGV.length > 0
-  CONF[:bot] = RandomBot.new
+  CONF[:bot] = DanBot.new
 
   game = Vindinium.new(CONF)
   game.start
