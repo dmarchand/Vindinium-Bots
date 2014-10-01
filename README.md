@@ -1,7 +1,3 @@
-## WHUT? ##
-
-Like the python one, but Ruby!
-See http://vindinium.org/starters
 
 ### USAGE ###
 
