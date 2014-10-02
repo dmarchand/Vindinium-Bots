@@ -5,6 +5,7 @@ class BoardNode
   def initialize tile
     self.tile = tile
     self.connections = []
+    self.weight = 99
   end
 
   def compareTo node

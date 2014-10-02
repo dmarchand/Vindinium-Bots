@@ -7,7 +7,11 @@ class DanBot < BaseBot
     graph = BoardGraph.new game.board
 
     astar = AStarPathFinder.new graph
-    astar.findpath(0, 2, 6, 6)
+    path = astar.findpath(0, 2, 6, 6)
+
+    # Debug
+    puts "Path ahoy!"
+    path.each { |x| puts "#{x.x}, #{x.y}" }
 
     DIRECTIONS[2]
 

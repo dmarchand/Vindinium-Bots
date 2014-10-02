@@ -49,20 +49,55 @@ class AStarPathFinder
       successors.each {
         |successor|
 
+        # If we already have this in the open list we can toss it
         index = openNodes.find_index(successor)
-
-        if(index)
+        #puts "index: #{index}"
+        if(!index.nil?)
           existingNode = openNodes[index]
           if(successor.compareTo(existingNode))
             next # gotta be edgy, continue is for plebs or something
+          else
+            openNodes.delete_at(index)
           end
         end
 
+        # Same as before, but in the closed list
+        index = closedNodes.find_index(successor)
+        #puts "index: #{index}"
+        if(!index.nil?)
+          existingNode = closedNodes[index]
+
+          if(successor.compareTo(existingNode))
+            next
+          else
+            closedNodes.delete_at(index)
+          end
+        end
+
+        # I can't get there from here
+        if(!successor.passable)
+          next
+        end
+
+        # If we've gotten this far, successor is a cool dude and should be checked out
+        successor.parentNode = currentNode
+        successor.weight = Math.hypot(finishNode.x - successor.x,finishNode.y - successor.y) # pretty naive, but whatevs for now
+
+
+
+        openNodes.push(successor)
 
       }
 
-
+      closedNodes.push(currentNode)
     end
+
+    trailEnd = finishNode
+    while(!trailEnd.parentNode.nil?) do
+      solution.unshift(trailEnd)
+      trailEnd = trailEnd.parentNode
+    end
+
 
     solution
 
