@@ -16,7 +16,7 @@ class BoardGraph
   end
 
   def build
-    puts "building nodes"
+    #puts "building nodes"
 
     row = 0
     tiles.each {
@@ -42,7 +42,7 @@ class BoardGraph
   end
 
   def connect
-    puts "connecting nodes"
+    #puts "connecting nodes"
     row = 0
     width = nodes.length
     puts width

@@ -1,19 +1,64 @@
 class DanBot < BaseBot
 
+
+  attr_accessor :path, :pathIndex
+
+  def initialize
+
+  end
+
   def move state
     game = Game.new state
 
 
+    me = game.heroes[0]
+
     graph = BoardGraph.new game.board
 
-    astar = AStarPathFinder.new graph
-    path = astar.findpath(0, 2, 6, 6)
+    if(self.path.nil? || self.pathIndex >= self.path.length )
 
-    # Debug
-    puts "Path ahoy!"
-    path.each { |x| puts "#{x.x}, #{x.y}" }
+      astar = AStarPathFinder.new graph
+      self.path = astar.findpath(me.pos['x'], me.pos['y'], 6, 6)
+      self.pathIndex = 0
 
-    DIRECTIONS[2]
+      # Debug
+      #puts "Path ahoy!"
+      #self.path.each { |x| puts "#{x.x}, #{x.y}" }
+    end
+
+    direction = DIRECTIONS[0]
+
+    x = me.pos['x']
+    y = me.pos['y']
+
+    nextNode = self.path[self.pathIndex]
+
+    if(nextNode.nil?)
+      direction = DIRECTIONS[0]
+    else
+      if(y < nextNode.y)
+        direction = DIRECTIONS[3]
+      end
+
+      if(y > nextNode.y)
+        direction = DIRECTIONS[4]
+      end
+
+      if(x < nextNode.x)
+        direction = DIRECTIONS[2]
+      end
+
+      if(x > nextNode.x)
+        direction = DIRECTIONS[1]
+      end
+      puts "At #{x}, #{y}. Moving to: #{nextNode.x}, #{nextNode.y} (#{direction})"
+    end
+
+    self.pathIndex += 1
+
+
+
+    direction
 
   end
 
