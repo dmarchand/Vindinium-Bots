@@ -10,9 +10,9 @@ class BoardGraph
     connect()
 
     ## quick test
-    puts "#{self.nodes[4][0].tile}"
-    puts "#{self.nodes[4][0].connections.length}"
-    puts "#{self.nodes[4][0].passable}"
+    #puts "#{self.nodes[5][5].tile}"
+    #puts "#{self.nodes[5][5].connections.length}"
+    #puts "#{self.nodes[5][5].passable}"
   end
 
   def build
@@ -28,6 +28,8 @@ class BoardGraph
 
         node = BoardNode.new tile
         node.passable = self.board.passable? row, column
+        node.x = row
+        node.y = column
         boardrow.push(node)
 
         column += 1
@@ -51,7 +53,7 @@ class BoardGraph
       height = x.length
       x.each {
         |node|
-        column += 1
+
 
 
         # This sucks lol
@@ -70,10 +72,12 @@ class BoardGraph
           node.connections.push(n)
         end
 
-        if(row > height - 1)
+        if(row < height - 1)
           n = nodes[row + 1][column]
           node.connections.push(n)
         end
+
+        column += 1
       }
       row += 1
     }
