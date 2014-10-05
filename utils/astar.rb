@@ -6,6 +6,14 @@ class AStarPathFinder
     self.graph = graph
   end
 
+  def printList list
+    list.each {|x| puts "#{x.totalCost}"}
+  end
+
+  def euclidianDistance startX, startY, finishX, finishY
+    Math.hypot(finishX - startX, finishY - startY)
+  end
+
   def findpath startX, startY, finishX, finishY
 
     solution = []
@@ -15,7 +23,11 @@ class AStarPathFinder
     startNode = nodes[startX][startY]
     finishNode = nodes[finishX][finishY]
 
-    #puts "Legit nodes entered, searching path"
+
+    # Simple weights to get the first node started
+    startNode.g = 0
+    startNode.h = euclidianDistance(startX, startY, finishX, finishY)
+    startNode.f = startNode.h
 
     openNodes = []
     closedNodes = []
@@ -24,7 +36,14 @@ class AStarPathFinder
 
     while openNodes.length > 0 do
 
-      currentNode = openNodes.pop()
+      currentNode = nil
+
+      # find node with lowest F in open
+      openNodes.each { |node|
+          if currentNode.nil? || node.f < currentNode.f
+            currentNode = node
+          end
+      }
 
       # Check to see if we've made it to the end
       if(currentNode.x == finishNode.x && currentNode.y == finishNode.y)
@@ -33,64 +52,32 @@ class AStarPathFinder
         break;
       end
 
+      openNodes.delete_at(openNodes.find_index(currentNode))
+      closedNodes.push(currentNode);
 
-      # Build list of potential dudes to check
-      successors = []
-      #puts "Checking adjacency for node #{startX},#{startY} (#{currentNode.connections.length} potential)"
       currentNode.connections.each {
           |node|
 
-          if(!currentNode.parentNode || !(node.x == currentNode.parentNode.x && node.y == currentNode.parentNode.y))
-            successors.push(node)
-           # puts "Node added to successors: #{node.x},#{node.y}"
+
+          nextG = currentNode.g + node.weight
+
+          if(nextG < node.g)
+            openNodes.delete_at(openNodes.find_index(node))
+            closedNodes.delete_at(closedNodes.find_index(node))
+          end
+
+
+          if(!openNodes.include?(node) && !closedNodes.include?(node))
+            node.g = nextG
+            node.h = euclidianDistance(node.x, node.y, finishNode.x, finishNode.y)
+            node.f = node.g + node.h
+            node.parentNode = currentNode
+            openNodes.push(node)
+            puts "boop"
           end
       }
 
-      successors.each {
-        |successor|
 
-        # If we already have this in the open list we can toss it
-        index = openNodes.find_index(successor)
-        #puts "index: #{index}"
-        if(!index.nil?)
-          existingNode = openNodes[index]
-          if(successor.compareTo(existingNode))
-            next # gotta be edgy, continue is for plebs or something
-          else
-            openNodes.delete_at(index)
-          end
-        end
-
-        # Same as before, but in the closed list
-        index = closedNodes.find_index(successor)
-        #puts "index: #{index}"
-        if(!index.nil?)
-          existingNode = closedNodes[index]
-
-          if(successor.compareTo(existingNode))
-            next
-          else
-            closedNodes.delete_at(index)
-          end
-        end
-
-        # I can't get there from here
-        if(!successor.passable)
-          next
-        end
-
-        # If we've gotten this far, successor is a cool dude and should be checked out
-        successor.parentNode = currentNode
-        successor.weight = Math.hypot(finishNode.x - successor.x,finishNode.y - successor.y) # pretty naive, but whatevs for now
-
-
-
-        openNodes.push(successor)
-        openNodes.sort! { |a,b| a.weight <=> b.weight }
-      }
-
-      closedNodes.push(currentNode)
-      closedNodes.sort! { |a,b| a.weight <=> b.weight }
     end
 
     trailEnd = finishNode
